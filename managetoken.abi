@@ -1,0 +1,213 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+    "version": "eosio::abi/1.1",
+    "types": [],
+    "structs": [
+        {
+            "name": "approve",
+            "base": "",
+            "fields": [
+                {
+                    "name": "admin",
+                    "type": "name"
+                },
+                {
+                    "name": "propusle_key",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "configstruct",
+            "base": "",
+            "fields": [
+                {
+                    "name": "TRPM_Price_amount",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "deleteall",
+            "base": "",
+            "fields": []
+        },
+        {
+            "name": "exec",
+            "base": "",
+            "fields": [
+                {
+                    "name": "admin",
+                    "type": "name"
+                },
+                {
+                    "name": "propusle_key",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "porpusel",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "uint64"
+                },
+                {
+                    "name": "proposer",
+                    "type": "name"
+                },
+                {
+                    "name": "approveres",
+                    "type": "name[]"
+                },
+                {
+                    "name": "rejecters",
+                    "type": "name[]"
+                },
+                {
+                    "name": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "approved",
+                    "type": "uint16"
+                },
+                {
+                    "name": "rejected",
+                    "type": "uint16"
+                },
+                {
+                    "name": "typeforsearch",
+                    "type": "uint64"
+                },
+                {
+                    "name": "actionParams",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "printstuff",
+            "base": "",
+            "fields": []
+        },
+        {
+            "name": "propusle",
+            "base": "",
+            "fields": [
+                {
+                    "name": "admin",
+                    "type": "name"
+                },
+                {
+                    "name": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "actionParams",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "reject",
+            "base": "",
+            "fields": [
+                {
+                    "name": "admin",
+                    "type": "name"
+                },
+                {
+                    "name": "propusle_key",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "sysadmins",
+            "base": "",
+            "fields": [
+                {
+                    "name": "admins",
+                    "type": "name[]"
+                }
+            ]
+        },
+        {
+            "name": "user",
+            "base": "",
+            "fields": [
+                {
+                    "name": "user",
+                    "type": "name"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "approve",
+            "type": "approve",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "deleteall",
+            "type": "deleteall",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "exec",
+            "type": "exec",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "printstuff",
+            "type": "printstuff",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "propusle",
+            "type": "propusle",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "reject",
+            "type": "reject",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "configstruct",
+            "type": "configstruct",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "porpusels",
+            "type": "porpusel",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "sysadmins",
+            "type": "sysadmins",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "users",
+            "type": "user",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "ricardian_clauses": [],
+    "variants": []
+}
