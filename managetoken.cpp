@@ -13,16 +13,16 @@ using namespace std;
 class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
     private:
         //////////////////Contract Vars///////////
-        symbol TRPM_Symbol=symbol("TRPM",4);
+        symbol eos2_Symbol=symbol("eos2",4);
         symbol Main_Symbol=symbol("EOS",4);
         name main_eosio_contract_token="eosio.token"_n;
-        name trpm_eosio_contract_token="eostrpmtoken"_n;
-        asset TRPM_Unit=asset((uint64_t)(10000),TRPM_Symbol);
+        name eos2_eosio_contract_token="eos2token"_n;
+        asset eos2_Unit=asset((uint64_t)(10000),eos2_Symbol);
         /////////////////////////////////////////
 
         ///////////////Contract Tables////////////
        struct [[eosio::table]] configstruct {
-            uint64_t TRPM_Price_amount=250;
+            uint64_t eos2_Price_amount=250;
 	    };
         typedef eosio::singleton<"settings"_n, configstruct> settings_table;
         settings_table config;
@@ -67,22 +67,22 @@ class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
                 
             }
             else {
-                token::transfer_action transfer(trpm_eosio_contract_token, {get_self(), "active"_n});
+                token::transfer_action transfer(eos2_eosio_contract_token, {get_self(), "active"_n});
                 transfer.send(from,to,quantity,"bought !");
             }
         }
 
-        void issue_trpm(name issuer,asset quantity, string memo) {
+        void issue_eos2(name issuer,asset quantity, string memo) {
           
-                token::issue_action issue(trpm_eosio_contract_token, {get_self(), "active"_n});
+                token::issue_action issue(eos2_eosio_contract_token, {get_self(), "active"_n});
                 issue.send(issuer,quantity,"issued");
         }
 
 
-        void updtrpmprice( uint64_t new_TRPM_Price ) {
+        void updeos2price( uint64_t new_eos2_Price ) {
 
             auto state =config.get();
-            state.TRPM_Price_amount=new_TRPM_Price;
+            state.eos2_Price_amount=new_eos2_Price;
             config.set(state,get_self());
         }
 
@@ -106,13 +106,13 @@ class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
         }
        
 
-        void buytrpm(name from,name to ,asset quantity,string ref_user){
+        void buyeos2(name from,name to ,asset quantity,string ref_user){
             
             check(quantity.amount >= 250,"mustn't be  less than 0.025 EOS");
             check(quantity.symbol == Main_Symbol, "These are not the droids you are looking for.");
              auto state=config.get();
     
-            asset TRPM_Price=asset(state.TRPM_Price_amount,Main_Symbol);
+            asset eos2_Price=asset(state.eos2_Price_amount,Main_Symbol);
             if(ref_user!=""){
                 name refuser=name(ref_user);
                 print(refuser," ",ref_user);
@@ -123,26 +123,26 @@ class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
                     print("no ref account found");
                     return ;
                 }
-                asset trpm_quantity=asset(quantity.amount*TRPM_Unit.amount/TRPM_Price.amount,TRPM_Symbol);
-                asset trpm_quantity_ref_user=asset(trpm_quantity.amount*10/100,TRPM_Symbol);
-                make_transfer(get_self(),from,trpm_quantity,"buy");
-                make_transfer(get_self(),refuser,trpm_quantity_ref_user,"buy");
+                asset eos2_quantity=asset(quantity.amount*eos2_Unit.amount/eos2_Price.amount,eos2_Symbol);
+                asset eos2_quantity_ref_user=asset(eos2_quantity.amount*10/100,eos2_Symbol);
+                make_transfer(get_self(),from,eos2_quantity,"buy");
+                make_transfer(get_self(),refuser,eos2_quantity_ref_user,"buy");
                 add_user(from);
             }
             else {
                 
-                asset trpm_quantity=asset(quantity.amount*TRPM_Unit.amount/TRPM_Price.amount,TRPM_Symbol);
-                make_transfer(get_self(),from,trpm_quantity,"buy");
+                asset eos2_quantity=asset(quantity.amount*eos2_Unit.amount/eos2_Price.amount,eos2_Symbol);
+                make_transfer(get_self(),from,eos2_quantity,"buy");
                 add_user(from);
             }
         }
-        void selltrpm(name from,name to,asset quantity,string memo){
+        void selleos2(name from,name to,asset quantity,string memo){
           
-            check(quantity.amount >= 40000, "mustn't be  less than 4000 TRPM");
-            check(quantity.symbol == TRPM_Symbol, "These are not the droids you are looking for.");
+            check(quantity.amount >= 40000, "mustn't be  less than 4000 eos2");
+            check(quantity.symbol == eos2_Symbol, "These are not the droids you are looking for.");
              auto state=config.get();
-            asset TRPM_Price=asset(state.TRPM_Price_amount,Main_Symbol);
-            asset main_quantity=asset(quantity.amount*TRPM_Price.amount/TRPM_Unit.amount,Main_Symbol);
+            asset eos2_Price=asset(state.eos2_Price_amount,Main_Symbol);
+            asset main_quantity=asset(quantity.amount*eos2_Price.amount/eos2_Unit.amount,Main_Symbol);
             make_transfer(get_self(),from,main_quantity,"sell");
         }
 
@@ -170,7 +170,7 @@ class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
         void onreceivedtokens(name from,name to, asset quantity,string memo)
         {
             
-            if (from == get_self() || to != get_self() ||(get_first_receiver()!=main_eosio_contract_token && get_first_receiver()!=trpm_eosio_contract_token))
+            if (from == get_self() || to != get_self() ||(get_first_receiver()!=main_eosio_contract_token && get_first_receiver()!=eos2_eosio_contract_token))
             {
                 return;
             }
@@ -187,10 +187,10 @@ class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
                 memoItems.push_back(itemValue);
             }
        
-            if(memoItems[0]=="buy_TRPM")
-                buytrpm(from,to,quantity,memoItems[1]);
-            else if(memoItems[0] =="sell_TRPM")
-                selltrpm(from,to,quantity,memoItems[1]);
+            if(memoItems[0]=="buy_eos2")
+                buyeos2(from,to,quantity,memoItems[1]);
+            else if(memoItems[0] =="sell_eos2")
+                selleos2(from,to,quantity,memoItems[1]);
             return;
             
         }
@@ -198,10 +198,10 @@ class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
          [[eosio::action]]
             void printstuff( ) {
                 auto state=config.get();
-                asset x=asset(state.TRPM_Price_amount,Main_Symbol);
+                asset x=asset(state.eos2_Price_amount,Main_Symbol);
                 auto state2=admins_table.get();
             print(x);
-            print(TRPM_Unit);
+            print(eos2_Unit);
         }
      
        
@@ -293,30 +293,30 @@ class [[eosio::contract("managetoken")]] managetoken : public eosio::contract {
                     uint64_t v=0;
                     for(int i=0;i<params[2].size();i++)
                         v*=10,v+=params[2][i]-'0';
-                    asset quantity=asset(v,TRPM_Symbol);
+                    asset quantity=asset(v,eos2_Symbol);
                     make_transfer(name(params[0]),name(params[1]),quantity,params[3]);
                 }
-                else if(actionType=="issue_trpm")
+                else if(actionType=="issue_eos2")
                 {
                      string param=it->actionParams;
                     uint64_t v=0;
                     for(int i=0;i<param.size();i++)
                         v*=10,v+=param[i]-'0';
-                    asset quantity=asset(v,TRPM_Symbol);
-                    issue_trpm(get_self(),quantity,"issue some");
+                    asset quantity=asset(v,eos2_Symbol);
+                    issue_eos2(get_self(),quantity,"issue some");
                 }
                 else if(actionType=="addnewadmin")
                 {
                    
                     addnewadmin(name(it->actionParams));
                 }
-                else if(actionType=="updtrpmprice")
+                else if(actionType=="updeos2price")
                 {
                      string param=it->actionParams;
                     uint64_t v=0;
                     for(int i=0;i<param.size();i++)
                         v*=10,v+=param[i]-'0';
-                    updtrpmprice(v);
+                    updeos2price(v);
                 }
                 propusels.modify(it,admin, [&]( auto& row ) {
                     row.typeforsearch=3;
